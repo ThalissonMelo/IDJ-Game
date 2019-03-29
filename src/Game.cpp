@@ -53,8 +53,8 @@ Game::Game(string title, int width, int heigth){
     title.c_str(),                  // window title
     SDL_WINDOWPOS_CENTERED,         // initial x position
     SDL_WINDOWPOS_CENTERED,         // initial y position
-    640,                            // width, in pixels
-    480,                            // height, in pixels
+    1024,                            // width, in pixels
+    600,                            // height, in pixels
     0           // flag
   );
 
@@ -106,7 +106,7 @@ Game& Game::getInstance(){
   string title = "Thalisson B. M. Silva - 15/0046871";
 
   if(instance == nullptr){
-	  return *(new Game(title, 640, 480));
+	  return *(new Game(title, 1024, 600));
   }
 
   return *instance;
