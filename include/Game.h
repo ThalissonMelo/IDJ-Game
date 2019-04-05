@@ -1,3 +1,6 @@
+#ifndef GAME_H_
+#define GAME_H_
+
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
 #include "../include/SDL_include.h"
@@ -23,3 +26,5 @@ class Game{
     State* state;
 		static Game* instance;
 };
+
+#endif

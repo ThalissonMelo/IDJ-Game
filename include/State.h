@@ -1,19 +1,27 @@
+#ifndef STATE
+#define STATE
+
 #include "SDL_include.h"
 #include "Sprite.h"
 #include "Music.h"
 #include <bits/stdc++.h>
+#include <GameObject.h>
 
 class State{
 	public:
 		State();
-    ~State();
-    bool QuitRequested();
-    void loadAssets();
-    void update(float dt);
-    void render();
+        ~State();
+        bool QuitRequested();
+        void LoadAssets();
+        void Update(float dt);
+        void Render();
 	private:
-    Sprite bg;
-    Music music;
-    bool quitRequested;
-
+        Component* bgScreen;
+        Music music;
+        bool quitRequested;
+        void Input();
+        void AddObject(int mouseX, int mouseY);
+        std::vector<std::unique_ptr<GameObject>> objectArray;
 };
+
+#endif

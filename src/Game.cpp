@@ -53,8 +53,8 @@ Game::Game(string title, int width, int heigth){
     title.c_str(),                  // window title
     SDL_WINDOWPOS_CENTERED,         // initial x position
     SDL_WINDOWPOS_CENTERED,         // initial y position
-    1024,                            // width, in pixels
-    600,                            // height, in pixels
+    width,                            // width, in pixels
+    heigth,                            // height, in pixels
     0           // flag
   );
 
@@ -87,8 +87,8 @@ Game::~Game(){
 
 void Game::run() {
   while (!(state->QuitRequested())) {
-      state->update(33);
-      state->render();
+      state->Update(33);
+      state->Render();
       SDL_RenderPresent(Game::getInstance().getRenderer());
   }
 }

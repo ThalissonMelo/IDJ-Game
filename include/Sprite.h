@@ -1,14 +1,18 @@
+#ifndef SPRITE
+#define SPRITE
+
 #pragma once
 #include <SDL2/SDL.h>
 #include "../include/SDL_include.h"
 #include <bits/stdc++.h>
+#include "Component.h"
 
 using namespace std;
 
-class Sprite{
+class Sprite : public Component{
   public:
-    Sprite();
-    Sprite(string file);
+    Sprite(GameObject& associated);
+    Sprite(GameObject& associated, string file);
     ~Sprite();
     void open(string file);
     void setClip(int x, int y, int w, int h);
@@ -16,9 +20,14 @@ class Sprite{
     int getWidth(); 
     int getHeight();
     bool isOpen();
+    void Update(float dt);
+    void Render();
+    bool Is(string type);
   private:
     SDL_Texture* texture; 
     int width;
     int height;
     SDL_Rect clipRect;
 };
+
+#endif

@@ -1,12 +1,12 @@
 #include "Sprite.h"
 #include "Game.h"
 
-Sprite::Sprite(){
+Sprite::Sprite(GameObject& associated) : Component(associated){
   texture = nullptr;
 }
 
-Sprite::Sprite(string file){
-  texture = nullptr;
+Sprite::Sprite(GameObject& associated, std::string file) : Sprite(associated){
+  // texture = nullptr;
   open(file);
 }
 
@@ -44,6 +44,8 @@ void Sprite::setClip(int x, int y, int w, int h){
 
 void Sprite::render(int x, int y){
   
+  //I will remote the x and y and get this from the object
+
   Game& gameInstance = Game::getInstance();
 
   SDL_Rect dst = {x, y, getWidth(), getHeight()};
@@ -65,4 +67,24 @@ int Sprite::getHeight(){
 
 bool Sprite::isOpen(){
   texture ? true : false;
+}
+
+void Sprite::Update(float dt) {
+
+}
+
+void Sprite::Render() {
+
+  Game& gameInstance = Game::getInstance();
+
+  SDL_Rect dst = {associated.box.x, associated.box.y, getWidth(), getHeight()};
+
+  SDL_RenderCopy(gameInstance.getRenderer(),
+               texture,
+               &clipRect,
+               &dst);
+}
+
+bool Sprite::Is(std::string type) {
+	return (type == "Sprite");
 }

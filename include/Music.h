@@ -1,3 +1,6 @@
+#ifndef MUSIC
+#define MUSIC
+
 #include "../include/SDL_include.h"
 #include <bits/stdc++.h>
 #include <SDL2/SDL.h>
@@ -17,3 +20,5 @@ class Music{
   private:
     Mix_Music* music;
 };
+
+#endif
