@@ -8,8 +8,9 @@
  #define PI 3.1415
 
  State::State(){
-   quitRequested = false;
+  quitRequested = false;
  	objectArray = std::vector<std::unique_ptr<GameObject>>();
+	srand(time(NULL));
 	
  	LoadAssets();
 	
@@ -70,6 +71,7 @@
  	Input();
  	for(auto& i: objectArray)
  		i->Update(dt);
+
  	for(int i = objectArray.size()-1; i >= 0; i--)
  		if(objectArray[i] != nullptr){
  			if(objectArray[i]->IsDead())

@@ -23,6 +23,7 @@ class Sound : public Component{
     void Update(float dt);
     void Render();
     bool Is(string type);
+    bool IsPlaying();
   private:
     Mix_Chunk* chunk;
     int channel;

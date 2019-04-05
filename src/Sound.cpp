@@ -1,5 +1,3 @@
-// #include "Sound.h"
-
 #include "Sound.h"
 
 Sound::Sound(GameObject& associated) : Component(associated){
@@ -12,17 +10,20 @@ Sound::Sound(GameObject& associated, string file) : Sound(associated){
 }
 
 Sound::~Sound(){
-  if(chunk != nullptr)
-   Mix_HaltChannel(channel);
+  Stop();
   
-  Mix_FreeChunk(chunk);
+  if(IsOpen() and not IsPlaying()){
+    Mix_FreeChunk(chunk);
+  //  Mix_HaltChannel(channel);
+  }
+  
 }
 
 void Sound::Play(int times) {
 	channel = Mix_PlayChannel(channel, chunk, times-1);
 	if(channel == -1) {
 		printf("Mix_PlayChannel failed: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
+		exit(-1);
 	}
 }
 
@@ -32,11 +33,15 @@ void Sound::Stop(){
   channel = -1;
 }
 
+bool Sound::IsPlaying() {
+	return (Mix_Playing(channel));
+}
+
 void Sound::Open(std::string file) {
 	chunk = Mix_LoadWAV(file.c_str());
 	if(!IsOpen()) {
 		printf("Mix_LoadWAV failed: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
+		exit(-1);
 	}
 }
 
