@@ -16,7 +16,7 @@ void Face::Damage(int damage){
 
     Sound *sound = (Sound *) this->associated.GetComponent("Sound");
     if(sound != nullptr)
-      sound->Play();
+      sound->Play(1);
   }
 }
 void Face::Update(float dt){

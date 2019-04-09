@@ -6,14 +6,6 @@ GameObject::GameObject(){
 }
 
 GameObject::~GameObject(){
-  for(auto t=ceil((double)components.size()/2); t!=0; t--)
-  {
-    if(components.size() % 2 != 0 && t == 1){
-      components.erase(components.begin());
-      break;
-    }
-    components.erase((components.begin() + t), (components.end() - t));
-  }
   components.clear();
 }
 
@@ -40,16 +32,16 @@ void GameObject::AddComponent(Component* cpt){
 }
 
 void GameObject::RemoveComponent(Component* cpt){
-  for(auto it = components.size()-1; it >= 0; it--)
-  		if(components[it] == cpt)
+  for(auto it = components.size()-1; it > 1; it--)
+  		if(components[it].get() == cpt)
   			components.erase(components.begin()+it);
 }
 
 Component* GameObject::GetComponent(string type){
   
-  for (auto it = 0; it < components.size(); it++)
+  for (unsigned it = 0; it < components.size(); it++)
     if (components[it]->Is(type))
-      return components[it];
+      return components[it].get();
   
   return nullptr;
 }

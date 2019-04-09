@@ -42,9 +42,27 @@ void Sprite::setClip(int x, int y, int w, int h){
   clipRect.h = h;
 }
 
-void Sprite::render(int x, int y){
-  
-  //I will remote the x and y and get this from the object
+int Sprite::getWidth(){
+  return width;
+}
+
+int Sprite::getHeight(){
+  return height;
+}
+
+bool Sprite::isOpen(){
+  if(texture)
+    return true;
+
+  return false;
+}
+
+void Sprite::Update(float dt) {
+
+}
+
+
+void Sprite::Render(int x, int y){
 
   Game& gameInstance = Game::getInstance();
 
@@ -54,35 +72,13 @@ void Sprite::render(int x, int y){
                  texture,
                  &clipRect,
                  &dst);
-
-}
-
-int Sprite::getWidth(){
-  return width;
-} 
-
-int Sprite::getHeight(){
-  return height;
-}
-
-bool Sprite::isOpen(){
-  texture ? true : false;
-}
-
-void Sprite::Update(float dt) {
-
 }
 
 void Sprite::Render() {
 
   Game& gameInstance = Game::getInstance();
 
-  SDL_Rect dst = {associated.box.x, associated.box.y, getWidth(), getHeight()};
-
-  SDL_RenderCopy(gameInstance.getRenderer(),
-               texture,
-               &clipRect,
-               &dst);
+  Render(associated.box.x, associated.box.y);
 }
 
 bool Sprite::Is(std::string type) {

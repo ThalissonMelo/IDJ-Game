@@ -1,5 +1,5 @@
-#ifndef SOUND
-#define SOUND
+#ifndef SOUND_H_
+#define SOUND_H_
 
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"

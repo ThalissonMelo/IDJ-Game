@@ -25,8 +25,7 @@ class GameObject{
     Component* GetComponent(string type);
     Rect box;
   private:
-    // std::vector<std::unique_ptr<Component>> components;
-     std::vector<Component *> components;
+    std::vector<std::shared_ptr<Component>> components;
     bool isDead;   
 };
 

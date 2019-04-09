@@ -1,5 +1,5 @@
-#ifndef SPRITE
-#define SPRITE
+#ifndef SPRITE_H_
+#define SPRITE_H_
 
 #pragma once
 #include <SDL2/SDL.h>
@@ -22,6 +22,7 @@ class Sprite : public Component{
     bool isOpen();
     void Update(float dt);
     void Render();
+    void Render(int x, int y);
     bool Is(string type);
   private:
     SDL_Texture* texture; 

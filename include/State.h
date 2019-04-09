@@ -1,5 +1,5 @@
-#ifndef STATE
-#define STATE
+#ifndef STATE_H_
+#define STATE_H_
 
 #include "SDL_include.h"
 #include "Sprite.h"
@@ -21,7 +21,7 @@ class State{
         bool quitRequested;
         void Input();
         void AddObject(int mouseX, int mouseY);
-        std::vector<std::unique_ptr<GameObject>> objectArray;
+        std::vector<std::shared_ptr<GameObject>> objectArray;
 };
 
 #endif

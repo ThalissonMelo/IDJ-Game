@@ -1,5 +1,5 @@
-#ifndef MUSIC
-#define MUSIC
+#ifndef MUSIC_H_
+#define MUSIC_H_
 
 #include "../include/SDL_include.h"
 #include <bits/stdc++.h>
