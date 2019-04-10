@@ -1,38 +1,31 @@
 #include "Sprite.h"
 #include "Game.h"
+#include "Resources.h"
+
 
 Sprite::Sprite(GameObject& associated) : Component(associated){
   texture = nullptr;
+  this->width = 0;
+	this->height = 0;
 }
 
 Sprite::Sprite(GameObject& associated, std::string file) : Sprite(associated){
-  // texture = nullptr;
   open(file);
 }
 
 Sprite::~Sprite(){
-  if(texture)
-    SDL_DestroyTexture(texture);
+  texture = nullptr;
 }
 
 void Sprite::open(string file){
 
-  Game& gameInstance = Game::getInstance();
-
-  if(texture != nullptr)
-    SDL_DestroyTexture(texture);
-
-  texture = IMG_LoadTexture(gameInstance.getRenderer(), file.c_str());
-
-  if(texture == nullptr){
-    cout << "Texture was loaded: " << SDL_GetError() << endl;
-  }
-  else
-  {
-    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
-  }
-
-  setClip(0, 0, width, height);
+  this->texture = Resources::GetImage(file);
+	
+  SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+	
+  this->setClip(0, 0, width, height);
+  this->associated.box.w = width;
+	this->associated.box.h = height;
 }
 
 void Sprite::setClip(int x, int y, int w, int h){
@@ -66,18 +59,15 @@ void Sprite::Render(int x, int y){
 
   Game& gameInstance = Game::getInstance();
 
-  SDL_Rect dst = {x, y, getWidth(), getHeight()};
+  SDL_Rect dst = {x, y, clipRect.w, clipRect.h};
 
-  SDL_RenderCopy(gameInstance.getRenderer(),
-                 texture,
-                 &clipRect,
-                 &dst);
+  SDL_RenderCopy(Game::getInstance().getRenderer(),
+                texture,
+                &clipRect,
+                &dst);
 }
 
 void Sprite::Render() {
-
-  Game& gameInstance = Game::getInstance();
-
   Render(associated.box.x, associated.box.y);
 }
 

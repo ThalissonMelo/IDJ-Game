@@ -6,6 +6,13 @@
 #include "Music.h"
 #include <bits/stdc++.h>
 #include <GameObject.h>
+#include "Face.h"
+#include "Vec2.h"
+#include "Sound.h"
+#include "TileMap.h"
+#include "TileSet.h"
+#include <SDL2/SDL.h>
+
 
 class State{
 	public:

@@ -1,11 +1,5 @@
-#include <SDL2/SDL.h>
 #include "State.h"
-#include "Face.h"
-#include "Vec2.h"
-#include "Sound.h"
-#include "Sprite.h"
-#include "TileMap.h"
-#include "TileSet.h"
+
 
  #define PI 3.1415
 
