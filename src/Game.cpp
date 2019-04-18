@@ -87,6 +87,7 @@ Game::~Game(){
 
 void Game::run() {
   while (!(state->QuitRequested())) {
+      InputManager::GetInstance().Update();
       state->Update(33);
       state->Render();
       SDL_RenderPresent(Game::getInstance().getRenderer());
