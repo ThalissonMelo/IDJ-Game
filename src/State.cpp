@@ -46,6 +46,21 @@
 		Vec2 objPos = (Vec2(InputManager::GetInstance().GetMouseX(), InputManager::GetInstance().GetMouseY()))+Vec2::Rotate(200, rand()%360);
 		AddObject(objPos.x, objPos.y);
 	}
+
+	// 	if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)) {
+	// 	for(int i = objectArray.size()-1; i >= 0; i--) {
+	// 		if(objectArray[i]->box.Contains(InputManager::GetInstance().GetMouseX(), InputManager::GetInstance().GetMouseY())) {
+	// 			Face* face = (Face*) objectArray[i]->GetComponent("Face");
+	// 			if(face) {
+	// 				if(face->hitpoints > 0){
+	// 					face->Damage(10+std::rand()%10);
+	// 					break;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+
  	for(auto& i: objectArray)
  		i->Update(dt);
 

@@ -21,7 +21,14 @@ void Face::Damage(int damage){
 }
 void Face::Update(float dt){
   if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)){
-    this->Damage(rand() % 10 + 10);
+    if(associated.box.Contains(InputManager::GetInstance().GetMouseX(), InputManager::GetInstance().GetMouseY())){
+      Face* face = (Face*) associated.GetComponent("Face");
+      if(face) {
+        if(face->hitpoints > 0){
+          face->Damage(10+std::rand()%10);
+        }
+      }
+    }
  	}
 }
 void Face::Render(){

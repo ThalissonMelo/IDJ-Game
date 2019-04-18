@@ -72,21 +72,21 @@ bool InputManager::IsKeyDown(int key){
 }
 
 bool InputManager::MousePress(int button){
-  if(keyUpdate[button] == updateCounter)
-    return keyState[button];
+  if(mouseUpdate[button] == updateCounter)
+    return mouseState[button];
   
   return false;
 }
 
 bool InputManager::MouseRelease(int button){
-  if(keyUpdate[button] == updateCounter)
-    return not keyState[button];
+  if(mouseUpdate[button] == updateCounter)
+    return not mouseState[button];
   
   return false;
 }
 
 bool InputManager::IsMouseDown(int button){
-  return keyState[button];
+  return mouseState[button];
 }
 
 int InputManager::GetMouseX(){
@@ -102,7 +102,7 @@ bool InputManager::QuitRequested(){
 }
 
 InputManager& InputManager::GetInstance(){
-  static InputManager imputInstance;
+  static InputManager inputInstance;
   
-  return imputInstance;
+  return inputInstance;
 }
