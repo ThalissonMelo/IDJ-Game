@@ -87,10 +87,12 @@ Game::~Game(){
 
 void Game::run() {
   while (!(state->QuitRequested())) {
+      this->CalculateDeltaTime();
       InputManager::GetInstance().Update();
-      state->Update(33);
+      state->Update(this->GetDeltaTime());
       state->Render();
       SDL_RenderPresent(Game::getInstance().getRenderer());
+      SDL_Delay(33);
   }
 }
 
@@ -112,4 +114,13 @@ Game& Game::getInstance(){
 
   return *instance;
 
+}
+
+void Game::CalculateDeltaTime(){
+  this->dt = SDL_GetTicks() - this->frameStart;
+	this->frameStart = this->frameStart + dt;
+}
+
+float Game::GetDeltaTime(){
+  return dt/1000;
 }

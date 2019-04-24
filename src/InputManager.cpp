@@ -1,4 +1,5 @@
 #include "InputManager.h"
+#include "Camera.h"
 
 #include <cstring>
 
@@ -36,8 +37,12 @@ bool InputManager::KeyRelease(int key){
 
 void InputManager::Update(){
   SDL_Event event;
-  SDL_GetMouseState(&(this->mouseX), &(this->mouseY));
   this->updateCounter++;
+  SDL_GetMouseState(&(this->mouseX), &(this->mouseY));
+
+  this->mouseX += Camera::pos.x;
+  this->mouseY += Camera::pos.y;
+
  	while (SDL_PollEvent(&event)) {
     if(event.key.repeat != 1) {
  		  if(event.type == SDL_KEYDOWN) {

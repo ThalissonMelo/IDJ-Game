@@ -68,7 +68,7 @@ void Sprite::Render(int x, int y){
 }
 
 void Sprite::Render() {
-  Render(associated.box.x, associated.box.y);
+  Render(associated.box.x - Camera::pos.x, associated.box.y - Camera::pos.y);
 }
 
 bool Sprite::Is(std::string type) {

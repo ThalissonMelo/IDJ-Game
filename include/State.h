@@ -12,6 +12,7 @@
 #include "TileMap.h"
 #include "TileSet.h"
 #include <SDL2/SDL.h>
+#include "Camera.h"
 
 
 class State{
@@ -22,6 +23,8 @@ class State{
     void LoadAssets();
     void Update(float dt);
     void Render();
+    GameObject* bg;
+	  GameObject* map;
   private:
     Component* bgScreen;
     Music music;

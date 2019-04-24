@@ -1,5 +1,5 @@
 #include "TileMap.h"
-
+#include "Camera.h"
 #include <fstream>
 
 TileMap::TileMap (GameObject& associated, string file, TileSet* tileSet) : Component(associated){
@@ -49,24 +49,28 @@ int TileMap::At (int x, int y, int z){
   return this->tileMatrix[elementPosition];
 }
 
-void TileMap::Render (){
-  for(int layer = mapDepth-1; layer >= 0 ; layer--)
-		RenderLayer(layer);
+void TileMap::Render() {
+	for(int layer = 0; layer < mapDepth; layer++)
+		RenderLayer(layer, Camera::pos.x*(1+layer*0.5), Camera::pos.y*(1+layer*0.5));
 }
 
-void TileMap::RenderLayer (int layer, int cameraX, int cameraY){
-	for(int i = 0; i < this->mapHeight; i++)
-		for(int j = 0; j < this->mapWidth; j++)
-			this->tileSet->RenderTile(this->At(j, i, layer), j*this->tileSet->GetTileHeight(), i*this->tileSet->GetTileWidth());
+void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
+	for(int j = 0; j < mapHeight; j++) {
+		for(int i = 0; i < mapWidth; i++) {
+			int x = i*tileSet->GetTileWidth()-cameraX;
+			int y = j*tileSet->GetTileHeight()-cameraY;
+			tileSet->RenderTile(At(i, j, layer), x, y);
+		}
+	}
 }
 
-int TileMap::GetWidth (){
+int TileMap::GetWidth(){
   return mapWidth;
 }
-int TileMap::GetHeight (){
+int TileMap::GetHeight(){
   return mapHeight;
 }
-int TileMap::GetDepth (){
+int TileMap::GetDepth(){
   return mapDepth;
 }
 

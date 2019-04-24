@@ -13,6 +13,7 @@ public:
 	Rect(float x, float y, float w, float h);
 	~Rect();
 	bool Contains(float a, float b);
+	Vec2 GetCenter();
 };
 
 #endif

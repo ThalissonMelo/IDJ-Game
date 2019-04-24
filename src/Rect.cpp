@@ -1,5 +1,9 @@
 #include "Rect.h"
 
+#include <bits/stdc++.h>
+
+using namespace std;
+
 Rect::Rect() {
 	x = 0;
 	y = 0;
@@ -22,4 +26,8 @@ bool Rect::Contains(float a, float b) {
   if((a > x) && (a < x+w) && (b > y) && (b < y+h))
 	  return true;
   return false;
+}
+
+Vec2 Rect::GetCenter() {
+	return Vec2(this->x+(this->w/2),this->y+(this->h/2));
 }
