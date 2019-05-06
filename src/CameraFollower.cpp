@@ -18,3 +18,7 @@ void CameraFollower::Render(){
 bool CameraFollower::Is(string type){
   return type == "CameraFollower";
 }
+
+void CameraFollower::Start(){
+
+}

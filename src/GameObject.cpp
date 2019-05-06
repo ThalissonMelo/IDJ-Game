@@ -2,46 +2,54 @@
 #include "Component.h"
 
 GameObject::GameObject(){
-  isDead = false;
+  this->isDead = false;
+  this->started = false;
 }
 
 GameObject::~GameObject(){
-  components.clear();
+  this->components.clear();
 }
 
 void GameObject::Update(float dt){
-  for(auto& component: components)
+  for(auto& component: this->components)
 		component->Update(dt);
 }
 
 void GameObject::Render(){
-  for(auto& component: components)
+  for(auto& component: this->components)
 		component->Render();
 }
 
+void GameObject::Start(){
+	for(auto& component : this->components)
+		component->Start();
+
+	this->started = true;
+}
+
 bool GameObject::IsDead(){
-  return isDead;
+  return this->isDead;
 }
 
 void GameObject::RequestDelete(){
-  isDead = true;
+  this->isDead = true;
 }
 
 void GameObject::AddComponent(Component* cpt){
-  components.emplace_back(cpt);
+  this->components.emplace_back(cpt);
 }
 
 void GameObject::RemoveComponent(Component* cpt){
-  for(auto it = components.size()-1; it > 1; it--)
-  		if(components[it].get() == cpt)
-  			components.erase(components.begin()+it);
+  for(auto it = this->components.size()-1; it > 1; it--)
+  		if(this->components[it].get() == cpt)
+  			this->components.erase(this->components.begin()+it);
 }
 
 Component* GameObject::GetComponent(string type){
   
-  for (unsigned it = 0; it < components.size(); it++)
-    if (components[it]->Is(type))
-      return components[it].get();
+  for (unsigned it = 0; it < this->components.size(); it++)
+    if (this->components[it]->Is(type))
+      return this->components[it].get();
   
   return nullptr;
 }

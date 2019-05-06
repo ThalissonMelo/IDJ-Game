@@ -22,6 +22,7 @@ class Sound : public Component{
     bool IsOpen();
     void Update(float dt);
     void Render();
+    void Start();
     bool Is(string type);
     bool IsPlaying();
   private:

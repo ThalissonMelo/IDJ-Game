@@ -31,3 +31,8 @@ bool Rect::Contains(float a, float b) {
 Vec2 Rect::GetCenter() {
 	return Vec2(this->x+(this->w/2),this->y+(this->h/2));
 }
+
+void Rect::SetPosition(Vec2 pos){
+	x = pos.x;
+	y = pos.y;
+}

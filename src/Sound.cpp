@@ -37,7 +37,7 @@ bool Sound::IsPlaying() {
 	return (Mix_Playing(channel));
 }
 
-void Sound::Open(std::string file) {
+void Sound::Open(string file) {
 	chunk = Mix_LoadWAV(file.c_str());
 	if(!IsOpen()) {
 		printf("Mix_LoadWAV failed: %s\n", SDL_GetError());
@@ -59,4 +59,8 @@ void Sound::Render(){
 
 bool Sound::Is(string type){
   return(type == "Sound");
+}
+
+void Sound::Start(){
+
 }

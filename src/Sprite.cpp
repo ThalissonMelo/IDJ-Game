@@ -9,7 +9,7 @@ Sprite::Sprite(GameObject& associated) : Component(associated){
 	this->height = 0;
 }
 
-Sprite::Sprite(GameObject& associated, std::string file) : Sprite(associated){
+Sprite::Sprite(GameObject& associated, string file) : Sprite(associated){
   open(file);
 }
 
@@ -71,6 +71,10 @@ void Sprite::Render() {
   Render(associated.box.x - Camera::pos.x, associated.box.y - Camera::pos.y);
 }
 
-bool Sprite::Is(std::string type) {
+bool Sprite::Is(string type) {
 	return (type == "Sprite");
+}
+
+void Sprite::Start(){
+
 }

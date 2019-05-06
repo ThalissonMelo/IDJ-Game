@@ -77,3 +77,7 @@ int TileMap::GetDepth(){
 bool TileMap::Is(string type){
   return(type == "TyleMap");
 }
+
+void TileMap::Start(){
+
+}

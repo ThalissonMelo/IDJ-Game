@@ -6,7 +6,6 @@
 #include "Music.h"
 #include <bits/stdc++.h>
 #include <GameObject.h>
-#include "Face.h"
 #include "Vec2.h"
 #include "Sound.h"
 #include "TileMap.h"
@@ -15,22 +14,32 @@
 #include "Camera.h"
 
 
-class State{
+class State {
+
   public:
-    State();
-    ~State();
-    bool QuitRequested();
-    void LoadAssets();
-    void Update(float dt);
-    void Render();
     GameObject* bg;
 	  GameObject* map;
+    weak_ptr< GameObject > AddObject(GameObject* go);
+    weak_ptr< GameObject > GetObjectPtr(GameObject* go);
+
+    State();
+    ~State();
+
+    void Update(float dt);
+    bool QuitRequested();
+    void LoadAssets();
+    void Render();
+    void Start();
+
   private:
-    Component* bgScreen;
+
     Music music;
+    bool started;
     bool quitRequested;
+    Component* bgScreen;
+    vector<shared_ptr<GameObject>> objectArray;
+
     void AddObject(int mouseX, int mouseY);
-    std::vector<std::shared_ptr<GameObject>> objectArray;
 };
 
 #endif

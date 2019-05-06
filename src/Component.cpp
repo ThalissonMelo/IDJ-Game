@@ -14,6 +14,10 @@ void Component::Render(){
 
 }
 
-bool Is(string type){
+bool Component::Is(string type){
+
+}
+
+void Component::Start(){
 
 }
