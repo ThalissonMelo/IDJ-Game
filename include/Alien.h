@@ -16,7 +16,6 @@ class Alien : public Component {
     void Update (float dt);
     void Render ();
     bool Is (string type);
-
   private:
     class Action {
       public:

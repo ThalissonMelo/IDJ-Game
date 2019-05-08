@@ -14,6 +14,7 @@ class Component;
 
 class GameObject{
   public:
+  
     GameObject();
     ~GameObject();
     void Start();
@@ -24,8 +25,11 @@ class GameObject{
     void AddComponent(Component* cpt);
     void RemoveComponent(Component* cpt);
     Component* GetComponent(string type);
+    
     Rect box;
     bool started;
+    float rotation;
+  
   private:
     vector<shared_ptr<Component>> components;
     bool isDead;

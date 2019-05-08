@@ -38,35 +38,36 @@ Vec2 Vec2::Rotate(float distance, float angle) {
 	return Vec2((cos(angle * PI/180)) * distance, (sin(angle * PI/180)) * distance);
 }
 
-float Vec2::GetCA(Vec2 mousePos){
-	return mousePos.x - this->x;
+float Vec2::GetCA(Vec2 position){
+	return position.x - this->x;
 }
 
-float Vec2::GetCO(Vec2 mousePos){
-	return mousePos.y - this->y;
+float Vec2::GetCO(Vec2 position){
+	return position.y - this->y;
 }
 
 float Vec2::GetDx(float x) {
-	return x-Vec2::x;
+	return x-this->x;
 }
 
 float Vec2::GetDy(float y) {
-	return y-Vec2::y;
+	return y-this->y;
 }
 
 float Vec2::GetAngle(Vec2 pos) {
-	return atan2(GetDx(pos.y), GetDy(pos.x))*(180/PI);
+	return atan2(GetDy(pos.y), GetDx(pos.x))*(180.0/PI);
 }
 
 
-float Vec2::GetHypot(Vec2 mousePos){
-	return hypot(this->GetCA(mousePos), this->GetCO(mousePos));
+float Vec2::GetHypot(Vec2 position){
+
+	return hypot(this->GetCA(position), this->GetCO(position));
 }
 
-float Vec2::GetCos(Vec2 mousePos){
-	return GetCA(mousePos)/GetHypot(mousePos);
+float Vec2::GetCos(Vec2 position){
+	return GetCA(position)/GetHypot(position);
 }
 
-float Vec2::GetSin(Vec2 mousePos){
-	return GetCO(mousePos)/GetHypot(mousePos);
+float Vec2::GetSin(Vec2 position){
+	return GetCO(position)/GetHypot(position);
 }

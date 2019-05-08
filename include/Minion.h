@@ -14,7 +14,7 @@ class Minion : public Component{
     void Shoot (Vec2 target);
   
   private:
-    std::weak_ptr<GameObject> alienCenter;
+    weak_ptr<GameObject> alienCenter;
     float arc;
 };
 

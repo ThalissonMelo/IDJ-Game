@@ -24,7 +24,7 @@
 
 	GameObject* go = new GameObject();
 	go->AddComponent(new Alien(*go, 8));
-	// go->box.SetPos(512-go->box.w/2, 300-go->box.h/2);
+	go->box.SetPosition(Vec2(512-go->box.w/2, 300-go->box.h/2));
 	
 	objectArray.emplace_back(map);
 	
@@ -55,11 +55,6 @@
 	
 	quitRequested = InputManager::GetInstance().QuitRequested();
 
-	// if(InputManager::GetInstance().KeyPress(SPACE_KEY)){
-	// 	Vec2 objPos = (Vec2(InputManager::GetInstance().GetMouseX(), InputManager::GetInstance().GetMouseY()))+Vec2::Rotate(200, rand()%360);
-	// 	AddObject(objPos.x, objPos.y);
-	// }
-
  	for(auto& i: objectArray){
  		i->Update(dt);
 	}
@@ -80,7 +75,6 @@
  }
 
 void State::Start(){
-	// this->LoadAssets();
 
 	for(auto& i : this->objectArray)
 		i->Start();
@@ -89,18 +83,8 @@ void State::Start(){
 }
 
  weak_ptr<GameObject> State::AddObject (GameObject *go){
- 	// GameObject* go = new GameObject();
- 	// Sprite* sprite = new Sprite(*go, "assets/img/penguinface.png");
- 	// go->AddComponent(sprite);
- 	// go->AddComponent(new Sound(*go, "assets/audio/boom.wav"));
- 	// go->AddComponent(new Face(*go));
- 	// objectArray.emplace_back(go);
- 
- 	// go->box = Rect(mouseX-sprite->getWidth()/2, mouseY-sprite->getHeight()/2,
-	// 			   sprite->getWidth(), sprite->getHeight());
 
-
-	std:shared_ptr<GameObject> goShared = shared_ptr<GameObject>(go);
+	shared_ptr<GameObject> goShared = shared_ptr<GameObject>(go);
 	this->objectArray.push_back(goShared);
 
 	if(this->started)

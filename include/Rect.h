@@ -9,7 +9,6 @@ public:
 	float y;
 	float w;
 	float h;
-	float rotation;
 	Rect();
 	Rect(float x, float y, float w, float h);
 	~Rect();
