@@ -6,35 +6,47 @@
 #include "../include/SDL_include.h"
 #include <bits/stdc++.h>
 #include "Component.h"
+#include "Timer.h"
 
 using namespace std;
 
 class Sprite : public Component{
   public:
     Sprite(GameObject& associated);
-    Sprite(GameObject& associated, string file);
+    Sprite(GameObject& associated, string file, int frameCount = 1, float frameTime = 1, bool repeat = true, float secondsToSelfDestruct = 0);
     ~Sprite();
-    void open(string file);
-    void setClip(int x, int y, int w, int h);
-    void render(int x, int y); 
-    int getWidth(); 
-    int getHeight();
-    bool isOpen();
-    void Update(float dt);
-    void Render();
+    
     void Start();
-    void Render(int x, int y);
-    bool Is(string type);
-    void SetScaleX(float scaleX, float scaleY);
+    bool isOpen();
+    void Render();
+    int getWidth(); 
     Vec2 GetScale();
+    int getHeight();
+    bool Is(string type);
+    void Update(float dt);
+    void open(string file);
+    void render(int x, int y); 
+    void Render(int x, int y);
+    void SetFrame (int frame);
+    void SetFrameCount (int frameCount);
+    void SetFrameTime (float frameTime);
+    void setClip(int x, int y, int w, int h);
+    void SetScaleX(float scaleX, float scaleY);
+    
+    int frameCount;
+    Timer selfDestructCount;
+    float secondsToSelfDestruct;
 
   private:
-    SDL_Texture* texture; 
     int width;
-    int height;
-    SDL_Rect clipRect;
     Vec2 scale;
-
+    int height;
+    bool repeats;
+    float frameTime;
+    int currentFrame;
+    SDL_Rect clipRect;
+    float timeElapsed;
+    SDL_Texture* texture; 
 };
 
 #endif

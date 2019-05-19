@@ -4,6 +4,7 @@
 GameObject::GameObject(){
   this->isDead = false;
   this->started = false;
+  this->box = Rect();
 }
 
 GameObject::~GameObject(){
@@ -11,18 +12,24 @@ GameObject::~GameObject(){
 }
 
 void GameObject::Update(float dt){
-  for(auto& component: this->components)
-		component->Update(dt);
+  // for(auto& component: this->components)
+	// 	component->Update(dt);
+  for(unsigned i = 0; i < this->components.size(); i++)
+    components[i]->Update(dt);
 }
 
 void GameObject::Render(){
-  for(auto& component: this->components)
-		component->Render();
+  // for(auto& component: this->components)
+	// 	component->Render();
+  for(unsigned i = 0; i < this->components.size(); i++)
+    components[i]->Render();
 }
 
 void GameObject::Start(){
-	for(auto& component : this->components)
-		component->Start();
+	// for(auto& component : this->components)
+	// 	component->Start();
+  for(unsigned i = 0; i < this->components.size(); i++)
+    components[i]->Start();
 
 	this->started = true;
 }
@@ -52,4 +59,9 @@ Component* GameObject::GetComponent(string type){
       return this->components[it].get();
   
   return nullptr;
+}
+
+void GameObject::NotifyCollision(GameObject& other){
+  for(int i = 0; i < other.components.size(); i++)
+    this->components[i]->NotifyCollision(other);
 }

@@ -33,6 +33,29 @@ Vec2 Rect::GetCenter() {
 }
 
 void Rect::SetPosition(Vec2 pos){
-	x = pos.x;
-	y = pos.y;
+	this->x = pos.x;
+	this->y = pos.y;
+}
+
+Vec2 Rect::GetWidHeig(){
+	return Vec2(this->w, this->h);
+}
+
+void Rect::SetWidHeig(Vec2 newWH){
+	this->w = newWH.x;
+	this->h = newWH.y;
+}
+
+Vec2 Rect::GetPosition() {
+	return Vec2(x, y);
+}
+
+void Rect::SetCenter(float x, float y) {
+	this->x = x-(w/2.0);
+	this->y = y-(h/2.0);
+}
+
+void Rect::SetCenter(Vec2 pos) {
+	this->x = pos.x-(w/2.0);
+	this->y = pos.y-(h/2.0);
 }

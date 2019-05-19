@@ -17,11 +17,15 @@ public:
 	float GetAngle(Vec2 pos);
 	float GetDx(float x);
 	float GetDy(float y);
+	Vec2 Rotate(float ang);
 	Vec2 operator+(const Vec2& rhs) const;
 	Vec2 operator+(const float rhs) const;
 	Vec2 operator-(const Vec2& rhs) const;
 	Vec2 operator-(const float rhs) const;
+	Vec2 operator*(const Vec2& rhs) const;
+	Vec2 operator*(const float rhs) const;
 	static Vec2 Rotate(float distance, float angle);
+
 };
 
 #endif

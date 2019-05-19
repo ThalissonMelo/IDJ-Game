@@ -111,3 +111,7 @@ InputManager& InputManager::GetInstance(){
   
   return inputInstance;
 }
+
+Vec2 InputManager::GetMousePosition(){
+  return Vec2(this->GetMouseX(), this->GetMouseY());
+}

@@ -4,26 +4,33 @@
 #include "InputManager.h"
 #include "Minion.h"
 #include "Game.h"
+#include "Collider.h"
+#include "Bullet.h"
+#include "Sprite.h"
+#include "PenguinBody.h"
 
 #define EPS 1e-9
 
 Alien::Alien(GameObject& associated, int nMinions) : Component(associated) {
   this->speed = Vec2(0,0);
   this->hp = 10;
-  this->taskQueue = queue<Action>();
   this->minionArray = vector<std::weak_ptr<GameObject>>();
   this->nMinions = nMinions;
+
+  this->state = RESTING;
+  this->cooldown = 1 + (rand()%11)/10;
   
-  associated.AddComponent(new Sprite(associated, "assets/img/alien.png"));
+  this->associated.AddComponent(new Sprite(associated, "assets/img/alien.png"));
+  this->associated.AddComponent(new Collider(associated));
+
+  this->alienCount++;
 }
 
 Alien::~Alien(){
   this->minionArray.clear();
-}
+  this->minionArray = vector<std::weak_ptr<GameObject>>();
 
-Alien::Action::Action(ActionType type, float x, float y) {
-	this->type = type;
-	this->pos = Vec2(x, y);
+  alienCount--;
 }
 
 void Alien::Start(){
@@ -40,61 +47,56 @@ bool equals(double a, double b){
 
 void Alien::Update(float dt){
 
-  this->associated.rotation -=60*dt;
+  this->associated.rotation -= 60*dt;
 
-  if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)){
-    float xAxis = (float)InputManager::GetInstance().GetMouseX();
-    float yAxis = (float)InputManager::GetInstance().GetMouseY();
-    this->taskQueue.push(Action(Action::SHOOT, xAxis, yAxis));
-  }
-  if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON)){
-    float xAxis = (float)InputManager::GetInstance().GetMouseX() - associated.box.w/2;
-    float yAxis = (float)InputManager::GetInstance().GetMouseY() - associated.box.h/2;
-    
-    this->taskQueue.push(Action(Action::MOVE, xAxis, yAxis));
-  }
+  if(PenguinBody::player) {
+    if(this->state == RESTING) {
+	  		this->restTimer.Update(dt);
+	  		if(this->restTimer.Get() > this->cooldown) {
+	  			this->state = MOVING;
+	  			this->restTimer.Restart();
+	  			this->cooldown = 1 + (rand()%11)/10;
+	  			this->destination = PenguinBody::player->GetPlayerCenter();
+	  		}
+	  	}
 
-  if(this->taskQueue.size() > 0){
-    Vec2 targetClick = taskQueue.front().pos;
-    if(this->taskQueue.front().type == Action::MOVE){
-      
-      Vec2 alienPosition = Vec2(associated.box.x, associated.box.y);
+    if(this->state == MOVING){
+      Vec2 position = this->associated.box.GetCenter();
+	  	Vec2 dest = this->destination;
 
-      float cos = alienPosition.GetCos(targetClick);
-      float sin = alienPosition.GetSin(targetClick);
-      
-      this->speed = Vec2(500*cos, 500*sin);
+	  	float cos = position.GetCos(dest);
+	  	if(cos != cos)
+	  		cos = 0;
+	  	float sin = position.GetSin(dest);
+	  	if(sin != sin)
+	  		sin = 0;
+	  	speed = Vec2(500*cos, 500*sin);
+	  	if((position.x+speed.x*dt > dest.x && dest.x > position.x) || (position.x+speed.x*dt < dest.x && dest.x < position.x))
+	  		position.x = dest.x;
+	  	else
+	  		position.x += speed.x*dt;
+	  	if((position.y+speed.y*dt > dest.y && dest.y > position.y) || (position.y+speed.y*dt < dest.y && dest.y < position.y))
+	  		position.y = dest.y;
+	  	else
+	  		position.y += speed.y*dt;
 
-      if((associated.box.x+speed.x*dt > targetClick.x && targetClick.x > associated.box.x)
-      || (associated.box.x+speed.x*dt < targetClick.x && targetClick.x < associated.box.x))
-				associated.box.x = targetClick.x;
-			else
-				associated.box.x += speed.x*dt;
-			
-      if((associated.box.y+speed.y*dt > targetClick.y && targetClick.y > associated.box.y)
-      || (associated.box.y+speed.y*dt < targetClick.y && targetClick.y < associated.box.y))
-				associated.box.y = targetClick.y;
-			else
-				associated.box.y += speed.y*dt;
-      if(associated.box.x == targetClick.x && associated.box.y == targetClick.y)
-        this->taskQueue.pop();
+      this->associated.box.SetCenter(position);
+  
+	  	if(equals(position.x, dest.x) && equals(position.y, dest.y)) {
+	  		this->state = RESTING;
+	  		this->destination = PenguinBody::player->GetPlayerCenter();
+	  		int nearestMinion = 0;
+	  		float minionDistance = minionArray[0].lock()->box.GetCenter().GetHypot(this->destination);
+	  		for(unsigned i = 1; i < minionArray.size(); i++) {
+	  			if(minionArray[i].lock()->box.GetCenter().GetHypot(this->destination) < minionDistance) {
+	  				nearestMinion = i;
+	  				minionDistance = minionArray[i].lock()->box.GetCenter().GetHypot(this->destination);
+	  			}
+	  		}
+	  		Minion* m = (Minion*) minionArray[nearestMinion].lock()->GetComponent("Minion");
+	  		m->Shoot(this->destination);
+	  	}
     }
-    else if(this->taskQueue.front().type == Action::SHOOT){
-      int nearestMinion = 0;
-			float minionDistance = this->minionArray[0].lock()->box.GetCenter().GetHypot(targetClick);
-			for(unsigned i = 0; i < this->minionArray.size(); i++) {
-				if(this->minionArray[i].lock()->box.GetCenter().GetHypot(targetClick) < minionDistance) {
-					nearestMinion = i;
-					minionDistance = this->minionArray[i].lock()->box.GetCenter().GetHypot(targetClick);
-				}
-			}
-			Minion* minion = (Minion*) this->minionArray[nearestMinion].lock()->GetComponent("Minion");
-			minion->Shoot(targetClick);
-      taskQueue.pop();
-    }
-
-    if(this->hp < 1)
-      this->associated.RequestDelete();
   }
 }
 
@@ -104,4 +106,32 @@ bool Alien::Is(string type){
 
 void Alien::Render(){
 
+}
+
+void Alien::AlienDamage(int damage){
+  this->hp -= damage;
+
+  if(this->hp < 1){
+    this->associated.RequestDelete();
+
+    GameObject* alienDeath = new GameObject();
+
+		alienDeath->AddComponent(new Sprite(*alienDeath, "assets/img/aliendeath.png", 4, 0.15, false, 1.5));
+		
+    Sound* sound = new Sound(*alienDeath, "assets/audio/boom.wav");
+		sound->Play();
+		alienDeath->AddComponent(sound);
+		
+    alienDeath->box.SetCenter(associated.box.GetCenter());
+		alienDeath->rotation = rand()%360;
+		
+    Game::getInstance().getState().AddObject(alienDeath);
+  }
+}
+
+void Alien::NotifyCollision(GameObject& other){
+  Bullet* bullet = (Bullet*) other.GetComponent("Bullet");
+  if(bullet)
+    if(!bullet->targetsPlayer)
+      this->AlienDamage(bullet->GetDamage());
 }

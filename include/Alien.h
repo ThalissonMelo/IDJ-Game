@@ -4,6 +4,7 @@
 #include<iostream>
 #include "GameObject.h"
 #include "Component.h"
+#include "Timer.h"
 
 using namespace std;
 
@@ -12,25 +13,24 @@ class Alien : public Component {
   public:
     Alien (GameObject& associated, int nMinions);
     ~Alien ();
+    
     void Start();
-    void Update (float dt);
     void Render ();
     bool Is (string type);
+    void Update (float dt);
+    void AlienDamage(int damage);
+    void NotifyCollision(GameObject& other);
+
+    int alienCount;
+    float cooldown;
   private:
-    class Action {
-      public:
-        enum ActionType {MOVE, SHOOT};
-        ActionType type;
-        Vec2 pos;
-        
-        Action(ActionType type, float x, float y);
-    };
-
-    Vec2 speed;
     int hp;
+    Vec2 speed;
     int nMinions;
-
-    queue<Action> taskQueue;
+    enum AlienState { MOVING, RESTING };
+    AlienState state;
+    Timer restTimer;
+    Vec2 destination;
     vector<weak_ptr<GameObject>> minionArray;
 };
 

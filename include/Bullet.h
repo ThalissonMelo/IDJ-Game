@@ -8,15 +8,18 @@ using namespace std;
 
 class Bullet : public Component{
   public:
-    Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, string sprite);
-    void Update(float dt);
+    Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, string sprite, bool repeat, int frameCount, bool targetsPlayer);
     void Render();
-    bool Is(string type);
     int GetDamage();
+    bool Is(string type);
+    void Update(float dt);
+    void NotifyCollision(GameObject& other);
+
+    bool targetsPlayer;
   private:
+    int damage;
     Vec2 speed;
     float distanceLeft;
-    int damage;
 };
 
 #endif

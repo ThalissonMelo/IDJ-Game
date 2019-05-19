@@ -21,3 +21,7 @@ bool Component::Is(string type){
 void Component::Start(){
 
 }
+
+void Component::NotifyCollision(GameObject& other){
+  
+}

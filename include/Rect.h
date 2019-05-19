@@ -13,9 +13,13 @@ public:
 	Rect(float x, float y, float w, float h);
 	~Rect();
 	bool Contains(float a, float b);
-	Vec2 GetCenter();
+	void SetCenter(float x, float y);
 	void SetPosition(Vec2 pos);
-	// Vec2 RectToVec();
+	void SetCenter(Vec2 postion);
+	Vec2 GetPosition();
+	Vec2 GetCenter();
+	Vec2 GetWidHeig();
+	void SetWidHeig(Vec2 newWH);
 };
 
 #endif

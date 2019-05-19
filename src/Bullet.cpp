@@ -1,16 +1,20 @@
 #include "Bullet.h"
 #include "Sprite.h"
+#include "MathHelper.h"
+#include "Collider.h"
 
 #define PI 3.141592653589793
 
 
-Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, string sprite) : Component(associated) {
-  this->speed = Vec2(speed*cos(angle * (PI/180.0)), speed*sin(angle * (PI/180.0)));
+Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, string sprite, bool repeat, int frameCount, bool targetsPlayer) : Component(associated) {
+  this->speed = Vec2(speed*MathHelper::Cos(angle), speed*MathHelper::Sin(angle));
 	this->damage = damage;
 	this->distanceLeft = maxDistance;
 	this->associated.rotation = angle;
+	this->targetsPlayer = targetsPlayer;
 
-	this->associated.AddComponent(new Sprite(associated, sprite));
+	this->associated.AddComponent(new Sprite(associated, sprite, frameCount, 0.15, repeat));
+  this->associated.AddComponent(new Collider(associated));
 }
 void Bullet::Update(float dt) {
   if(this->distanceLeft > 0) {
@@ -30,4 +34,17 @@ bool Bullet::Is(string type){
 }
 int Bullet::GetDamage(){
   return this->damage;
+}
+
+void Bullet::NotifyCollision(GameObject& other){
+  if (this->targetsPlayer) {
+    if (other.GetComponent("PenguinCannon") != nullptr || other.GetComponent("PenguinBody") != nullptr) {
+      this->associated.RequestDelete();
+    }
+  }
+	else {
+    if (other.GetComponent("Alien") != nullptr) {
+      this->associated.RequestDelete();
+    }
+  }
 }

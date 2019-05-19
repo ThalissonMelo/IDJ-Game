@@ -1,6 +1,7 @@
-#define PI 3.14159265
+#define PI 3.141592653589793
 
 #include "Vec2.h"
+#include "MathHelper.h"
 
 #include <math.h>
 
@@ -34,8 +35,20 @@ Vec2 Vec2::operator-(const float rhs) const {
 }
 
 
+Vec2 Vec2::operator*(const Vec2& rhs) const {
+	return Vec2(x * rhs.x, y * rhs.y);
+}
+
+Vec2 Vec2::operator*(const float rhs) const {
+	return Vec2(x * rhs, y * rhs);
+}
+
 Vec2 Vec2::Rotate(float distance, float angle) {
-	return Vec2((cos(angle * PI/180)) * distance, (sin(angle * PI/180)) * distance);
+	return Vec2((MathHelper::Cos(angle)) * distance, (MathHelper::Sin(angle)) * distance);
+}
+
+Vec2 Vec2::Rotate(float ang) {
+	return Vec2(x*MathHelper::Cos(ang) - y*MathHelper::Sin(ang), y*MathHelper::Cos(ang) + x*MathHelper::Sin(ang));
 }
 
 float Vec2::GetCA(Vec2 position){
@@ -60,8 +73,10 @@ float Vec2::GetAngle(Vec2 pos) {
 
 
 float Vec2::GetHypot(Vec2 position){
-
-	return hypot(this->GetCA(position), this->GetCO(position));
+	float h = hypot(this->GetCA(position), this->GetCO(position));
+	if(h < 0.1)
+		return 1;
+	return h;
 }
 
 float Vec2::GetCos(Vec2 position){
